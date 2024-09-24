@@ -1,4 +1,5 @@
-import Home from "./Home.jsx"
+import Home from "./Home.tsx"
+
 
 function App() {
   
