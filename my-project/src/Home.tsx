@@ -1,12 +1,47 @@
 import React, { useState } from "react";
 import Navbar from "./components/Navbar";
-import { YoutubeTranscript } from "youtube-transcript"; // Ensure you're importing this for type definitions
+import { YoutubeTranscript } from "youtube-transcript";
+import About from "./About"; // Ensure you're importing this for type definitions
+import { useEffect } from "react";
 
 const Home: React.FC = () => {
   const [videoId, setVideoId] = useState<string>("");
   const [transcript, setTranscript] = useState<any[]>([]); // Use any[] or define a more specific type if known
   const [error, setError] = useState<string | null>(null); // Allow error to be a string or null
-  const [loading, setLoading] = useState<boolean>(false); // Specify loading state type
+  const [loading, setLoading] = useState<boolean>(false);
+  const [backgroundImage,setBackgroundImage]=useState<string>(`src/assets/${Math.floor(Math.random() * 40)}.gif`) // Specify loading state type
+
+  const changeBackgroundImage=()=>{
+    setBackgroundImage(`src/assets/${Math.floor(Math.random() * 40)}.gif`)
+
+  }
+  useEffect(() => {
+    const interval = setInterval(changeBackgroundImage, 30000);
+
+    // Call the function initially to set the first background
+    changeBackgroundImage();
+
+    // Cleanup the interval when the component unmounts
+    return () => clearInterval(interval);
+  }, []);
+
+  const downloadTranscript=(transcript)=>{
+    
+
+      // Create a Blob with the text content
+      const blob = new Blob([transcript], { type: 'text/plain' });
+
+      // Create a link element to trigger the download
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `${videoId}.txt`; // Filename for the downloaded file
+
+      // Append the link to the body (required for Firefox)
+      document.body.appendChild(link);
+
+      // Trigger the download by simulating a click on the link
+      link.click();
+  }
 
   const fetchTranscript = async (videoId: string) => {
     setLoading(true);
@@ -25,7 +60,8 @@ const Home: React.FC = () => {
       }
       const transcriptData = await response.json();
       console.log("Transcript: ", transcriptData);
-      setTranscript(transcriptData); // Set the transcript data in state
+      setTranscript(transcriptData);
+      downloadTranscript(JSON.stringify(transcript)) // Set the transcript data in state
     } catch (error) {
       console.error('Error fetching transcript:', error.message);
       setError("Error fetching transcript. Please check the video ID."); // Now this will be correctly typed
@@ -36,12 +72,12 @@ const Home: React.FC = () => {
 
   return (
     <div className="h-screen w-full bg-repeat bg-cover bg-center transition-all duration-1000"
-      style={{ backgroundImage: `url(${`src/assets/${Math.floor(Math.random() * 40)}.gif`})` }}> 
+      style={{ backgroundImage:`url(${backgroundImage})` }}> 
       <div className="text-center flex relative justify-center items-center">
         <Navbar />
       </div> 
     
-      <div className="flex justify-center">
+      <div className="flex justify-center mt-[6rem] top-[50%]  m-auto ">
         <input
           type="text"
           placeholder="Enter YouTube video URL or ID"
@@ -51,20 +87,31 @@ const Home: React.FC = () => {
         />
         <button 
           onClick={() => fetchTranscript(videoId)} // Call fetchTranscript on click
-          className="ml-4 px-6 py-2 rounded-full bg-blue-500 text-white hover:bg-blue-700 transition-colors">
+          className="ml-4 px-6 py-2 rounded-full bg-white font-lines hover:bg-blue-700 transition-colors">
           Get Transcript
         </button>
       </div>
       
-      {loading && <p className="text-blue-500">Loading...</p>}
+
+
+
+
+
+      <div className="w-[80%] m-auto text-center mb-[3rem]">
+
+      {loading && <div className="font-lines text-2xl m-auto mt-[4rem] inline-block">Loading <img src="https://res.cloudinary.com/ddsqjzrow/image/upload/v1727269500/loading_pd3k3h.png" alt="" className="w-[15px] h-[15px]" /></div>}
       {error && <p className="text-red-500">{error}</p>}
       {transcript.length > 0 && (
-        <ul className="mt-4">
+        <div className="w-[40%] mt-[3rem] h-64 overflow-y-auto m-auto  p-4 border bg-white border-gray-300 rounded-lg">
+          <div className="space-y-4">
           {transcript.map((line, index) => (
-            <li key={index}>{line.text}</li>
+            <p className=" inline-block" key={index}>{line.text}</p>
           ))}
-        </ul>
+        </div>
+        </div>
       )}
+      </div>
+    
     </div>
   );
 };
