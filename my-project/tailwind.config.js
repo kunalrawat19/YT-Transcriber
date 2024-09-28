@@ -8,6 +8,8 @@ export default {
     extend: {
       fontFamily:{
         "lines":["Rubik Lines", "system-ui"],
+        "maps":["Rubik Maps", "system-ui"],
+        "rubik":["Rubik Mono One", "monospace"]
       }
     },
   },

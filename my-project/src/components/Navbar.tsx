@@ -13,7 +13,7 @@ const Navbar=()=>{
             <div className="flex gap-[2rem] font-lines">
 
             <Link to="/about" className=" p-4  bg-white rounded-full  hover:text-blue-400">About</Link>
-            {/* <Link to="/instructions" className=" p-4 bg-white rounded-full  hover:text-blue-400">How to use</Link> */}
+            <Link to="/instructions" className=" p-4 bg-white rounded-full  hover:text-blue-400">How to use</Link>
             <Link to="/register" className="p-4 bg-white t   rounded-full hover:text-blue-400">Register</Link>
             </div>
 

@@ -37,8 +37,8 @@ const About = () => {
       style={{ backgroundImage:`url(${backgroundImage})` }}> 
     
         <Navbar/>
-    <div className="h-[80vh] flex flex-col font-bold font-lines  bg-white w-[70%] rounded-2xl m-auto  p-4">
-        <h1>designed to help me easily access, analyze, and manage transcripts from various sources, like YouTube videos or podcasts. It automatically generates transcripts from audio or video content, allowing me to search, highlight, and navigate through spoken words to extract key information quickly.</h1>
+    <div className="h-[80vh] flex flex-col font-bold font-rubik  bg-white w-[70%] rounded-2xl m-auto  p-4">
+        <h1>Designed to help easily access, analyze, and manage YouTube transcripts. Allows to translate and summarize transcripts in several languages.</h1>
         <h1 className='text-3xl '>How to get the transcript of a YouTube video</h1>
 
         {instructions.map((step,index)=>
