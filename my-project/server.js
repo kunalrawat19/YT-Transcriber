@@ -16,7 +16,9 @@ app.get('/', function (req, res)  {
 
 
 app.get('/fetch-transcript', async (req, res) => {
+
     const { videoId } = req.query;
+    console.log(videoId);
     try {
         const transcript = await YoutubeTranscript.fetchTranscript(videoId); 
         console.log(transcript);
