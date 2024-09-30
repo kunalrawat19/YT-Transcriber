@@ -25,7 +25,7 @@ const Navbar=()=>{
     return (
         <nav className="w-full  flex items-center justify-between p-[2rem]">
             <div>
-            <Link to="/" className="text-5xl  text-white font-lines">Scriptify</Link>
+            <Link to="/" className="text-5xl  text-white font-lines">Scriptifyy</Link>
 
             </div>
 
