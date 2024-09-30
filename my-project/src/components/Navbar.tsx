@@ -31,34 +31,40 @@ const Navbar=()=>{
 
 
 
-             {windowWidth>1024?( <div className="flex gap-[2rem] font-lines">
+             {windowWidth>768?( <div className="flex gap-[2rem] font-lines">
 
             {/* <Link to="/about" className=" p-4  bg-white rounded-full  hover:text-blue-400">About</Link> */}
             <Link to="/about" className=" p-4 bg-white rounded-full  hover:text-blue-400">About</Link>
             <Link to="/register" className="p-4 bg-white t   rounded-full hover:text-blue-400">Register</Link>
             </div>
             ):(
-            <div className="bg-white rounded-full ">
+            <div className="bg-white rounded-2xl  p-2 ">
                 <button onClick={toggleMenu}>
                 {isOpen ? <AiOutlineClose size={24} /> : <AiOutlineMenu size={24} />}
                 </button>
             </div>
-        
         )}
 
 
-            
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        {isOpen && windowWidth <= 768 && (
+        <div className="absolute top-20 right-0 bg-white shadow-md rounded-lg p-4 mr-[1rem] mt-[0.5rem]">
+          <Link
+            to="/about"
+            onClick={toggleMenu}
+            className="block p-2 hover:text-blue-400 border-solid font-lines"
+          >
+            About
+          </Link>
+          <Link
+            to="/register"
+            onClick={toggleMenu}
+            className="block p-2 hover:text-blue-400 border-solid font-lines"
+          >
+            Register
+          </Link>
+        </div>
+        )}
         </nav>
-
     )
 }
 export default Navbar;
