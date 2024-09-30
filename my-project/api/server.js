@@ -1,40 +1,64 @@
-// server.js
-import express from "express";
-import cors from 'cors';
-import { YoutubeTranscript } from 'youtube-transcript';
-import ytdl from "ytdl-core"
+// // server.js
+// import express from "express";
+// import cors from 'cors';
+// import { YoutubeTranscript } from 'youtube-transcript';
+// import ytdl from "ytdl-core"
 
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+// const app = express();
+// const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+// app.use(cors());
 
-app.get('/', function (req, res)  {
-    res.send("done")
-});
-
-
-app.get('/fetch-transcript', async (req, res) => {
-    const { videoId } = req.query;
-    try {
-        const transcript = await YoutubeTranscript.fetchTranscript(videoId); 
-        console.log(transcript);
-        res.json(transcript);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-// app.get('/video-info', async (req, res) => {
-//     const { videoId } = req.query;
-//     try {
-//         const info = await ytdl.getInfo(videoId);
-//         res.json({ title: info.videoDetails.title });
-//     } catch (error) {
-//         res.status(500).send('Error fetching video info');
-//     }
+// app.get('/', function (req, res)  {
+//     res.send("done")
 // });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+
+// app.get('/fetch-transcript', async (req, res) => {
+//     const { videoId } = req.query;
+//     try {
+//         const transcript = await YoutubeTranscript.fetchTranscript(videoId); 
+//         console.log(transcript);
+//         res.json(transcript);
+//     } catch (error) {
+//         res.status(500).json({ error: error.message });
+//     }
+// });
+// // app.get('/video-info', async (req, res) => {
+// //     const { videoId } = req.query;
+// //     try {
+// //         const info = await ytdl.getInfo(videoId);
+// //         res.json({ title: info.videoDetails.title });
+// //     } catch (error) {
+// //         res.status(500).send('Error fetching video info');
+// //     }
+// // });
+
+// app.listen(PORT, () => {
+//     console.log(`Server is running on http://localhost:${PORT}`);
+// });
+
+import { YoutubeTranscript } from 'youtube-transcript';
+import ytdl from 'ytdl-core';
+
+// Express-like function handler
+export default async function handler(req, res) {
+  const { videoId } = req.query;
+
+  if (req.method === 'GET') {
+    if (req.url.startsWith('/fetch-transcript')) {
+      try {
+        const transcript = await YoutubeTranscript.fetchTranscript(videoId);
+        res.status(200).json(transcript);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    } else {
+      res.status(404).json({ message: 'Not Found' });
+    }
+  } else {
+    res.status(405).json({ message: 'Method Not Allowed' });
+  }
+}
+

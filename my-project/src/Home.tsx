@@ -60,7 +60,7 @@ const Home: React.FC = () => {
     { id: 41, link: "https://res.cloudinary.com/dqgrwjod2/image/upload/v1727266577/__2_h6nzjt.gif" },
     { id: 42, link: "https://res.cloudinary.com/dqgrwjod2/image/upload/v1727700655/happy_life_GIF_-_Find_Share_on_GIPHY_dzhwka.gif" },
     { id: 43, link: "https://res.cloudinary.com/dqgrwjod2/image/upload/v1727700648/latenights_xjsgql.gif" },
-    { id: 44, link: "https://res.cloudinary.com/dqgrwjod2/image/upload/v1727700639/fb95727b-2d01-4cdb-aea1-7accad04945f_is5m8h.jpg" },
+    { id: 44, link: "https://res.cloudinary.com/dqgrwjod2/image/upload/v1727713060/Megalo_Box_furdhn.gif" },
     { id: 45, link: "https://res.cloudinary.com/dqgrwjod2/image/upload/v1727700634/happy_life_GIF_-_Find_Share_on_GIPHY_hvx4ko.gif" },
     {id:46,link:"https://res.cloudinary.com/dqgrwjod2/image/upload/v1727700629/a4l8vys2griy_gif_960_540_jtfj56.gif"},
     {id:47,link:"https://res.cloudinary.com/dqgrwjod2/image/upload/v1727700619/7he_R4_q8rwhz.gif"},
