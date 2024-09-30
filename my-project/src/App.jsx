@@ -1,5 +1,5 @@
-import Home from "./Home.tsx"
-import About from "./About.tsx";
+import Home from "/src/Home.tsx"
+import About from "/src/About.tsx";
 
 
 import { BrowserRouter,Route,Routes } from "react-router-dom";
