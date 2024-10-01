@@ -2,18 +2,20 @@ import React, { useState, useEffect } from "react";
 import Navbar from "/src/components/Navbar.tsx";
 
 import axios from "axios";
-import { LuCopy } from "react-icons/lu";
 import translate from "translate";
 
+import { MdDownload } from "react-icons/md";
+import { LuCopy } from "react-icons/lu";
 import { FaChevronDown } from "react-icons/fa";
 
 const Home: React.FC = () => {
   const [videoId, setVideoId] = useState<string>("");
-  const [transcript, setTranscript] = useState<any[]>([]); 
+  const [transcript, setTranscript] = useState<any[]>([]);
+  const[transcriptCopy,setTranscriptCopy]=useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [backgroundImage, setBackgroundImage] = useState<string>(`src/assets/${Math.floor(Math.random() * 40)}.gif`);
-  const [targetLanguage, setTargetLanguage] = useState('it');
+  const [targetLanguage, setTargetLanguage] = useState('en');
   const [extractedId,setExtractedId]=useState('');
 
 
@@ -116,7 +118,7 @@ const Home: React.FC = () => {
       setTranscript(transcriptData);
 
       
-      downloadTranscript(JSON.stringify(transcriptData));
+      
     } catch (error) {
       // console.error('Error fetching transcript:', error.message);
       setError("Error fetching transcript. Please check the video ID and try again.");
@@ -127,7 +129,9 @@ const Home: React.FC = () => {
     }
   };
 
-  
+  function downloadTrans(){
+    downloadTranscript(JSON.stringify(transcript));
+  }
 
   interface TranscriptLine {
     text: string;
@@ -164,7 +168,7 @@ const Home: React.FC = () => {
   
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(JSON.stringify(transcript, null, 2))
+    navigator.clipboard.writeText(JSON.stringify(transcript))
       .then(() => {
         alert('Copied to clipboard!'); // Feedback to the user (can be improved)
       })
@@ -251,9 +255,16 @@ const Home: React.FC = () => {
         <div className=" sticky top-0  z-10 border-b border-gray-300 bg-white p-4 overflow-hidden">
           <div className="flex justify-between items-center">
             <div className="font-bold text-2xl">Transcript</div>
-            <button >
+            <div className="flex flex-row gap-[1rem] ">
+
+            <button className="text-blue-500 font-bold text-2xl border rounded-xl p-2" onClick={downloadTrans}>
+            <MdDownload />
+
+            </button>
+            <button className="text-blue-500 font-bold text-xl border rounded-xl p-3 " onClick={handleCopy}>
               <LuCopy />
             </button>
+            </div>
           </div>
         </div>
 
