@@ -116,43 +116,51 @@ const Home: React.FC = () => {
       setTranscript(transcriptData);
 
       
-      // handleTranslate();
       downloadTranscript(JSON.stringify(transcriptData));
     } catch (error) {
       // console.error('Error fetching transcript:', error.message);
       setError("Error fetching transcript. Please check the video ID and try again.");
     } finally {
+      // handleTranslate();
       setLoading(false);
       setError(null)
     }
   };
 
-  // interface TranscriptLine {
-  //   text: string;
-  //   offset: number;
-  // }
+  
 
-  // const handleTranslate = async () => {
-  //   let translatedText: TranscriptLine[] = [];
+  interface TranscriptLine {
+    text: string;
+    offset: number;
+  }
+
+  const handleTranslate = async () => {
+    let translatedText: TranscriptLine[] = [];
   
-  //   try {
-  //     // Use Promise.all to handle translations concurrently
-  //     translatedText = await Promise.all(
-  //       transcript.map(async (line) => {
-  //         const translatedText = await translate(line.text, { to: targetLanguage });
-  //         return {
-  //           text: translatedText,
-  //           offset: line.offset,
-  //         };
-  //       })
-  //     );
+    try {
+      // Use Promise.all to handle translations concurrently
+      translatedText = await Promise.all(
+        transcript.map(async (line) => {
+          const translatedText = await translate(line.text, { to: targetLanguage });
+          return {
+            text: translatedText,
+            offset: line.offset,
+          };
+        })
+      );
   
-  //     console.log(translatedText);
-  //     setTranscript(translatedText)
-  //   } catch (error) {
-  //     console.error("Translation Error:", error);
-  //   }
-  // };
+      console.log(translatedText);
+      setTranscript(translatedText)
+    } catch (error) {
+      console.error("Translation Error:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (transcript) {
+      handleTranslate();
+    }
+  }, [transcript]);
   
 
   const handleCopy = () => {
@@ -212,8 +220,8 @@ const Home: React.FC = () => {
             <option value="ja">Japanese</option>
             <option value="ru">Russian</option>
           </select>
-          {/* Custom icon positioned absolutely */}
           <FaChevronDown className="absolute inset-y-0 right-5 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-400" />
+          {/* Custom icon positioned absolutely */}
           </div>
 
 
