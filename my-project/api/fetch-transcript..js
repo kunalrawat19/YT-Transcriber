@@ -42,23 +42,19 @@
 import { YoutubeTranscript } from 'youtube-transcript';
 import ytdl from 'ytdl-core';
 
-// Express-like function handler
 export default async function handler(req, res) {
   const { videoId } = req.query;
 
   if (req.method === 'GET') {
-    if (req.url.startsWith('/fetch-transcript')) {
-      try {
-        const transcript = await YoutubeTranscript.fetchTranscript(videoId);
-        res.status(200).json(transcript);
-      } catch (error) {
-        res.status(500).json({ error: error.message });
-      }
-    } else {
-      res.status(404).json({ message: 'Not Found' });
+    try {
+      const transcript = await YoutubeTranscript.fetchTranscript(videoId);
+      res.status(200).json(transcript);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
   } else {
     res.status(405).json({ message: 'Method Not Allowed' });
   }
 }
+
 
