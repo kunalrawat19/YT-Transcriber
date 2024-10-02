@@ -113,7 +113,7 @@ const Home: React.FC = () => {
     setExtractedId(match ? match[1] : videoId);
 
     try {
-      const response = await fetch(`http://localhost:3000/fetch-transcript?videoId=${extractedId}`)
+      const response = await fetch(`https://scriptifyy.vercel.app/api/fetch-transcript?videoId=${extractedId}`)
       if (!response.ok) throw new Error('Network response was not ok');
       let transcriptData = await response.json();
 
