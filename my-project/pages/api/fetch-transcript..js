@@ -47,9 +47,9 @@ export default async function handler(req, res) {
 
   if (req.method === 'GET') {
     try {
+      console.log("hello")
       const transcript = await YoutubeTranscript.fetchTranscript(videoId);
       res.status(200).json(transcript);
-      console.log("hello")
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

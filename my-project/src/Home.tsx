@@ -10,7 +10,7 @@ import { FaChevronDown } from "react-icons/fa";
 
 const Home: React.FC = () => {
   const [videoId, setVideoId] = useState<string>("");
-  const [extractedId,setExtractedId]=useState('');
+  // const [extractedId,setExtractedId]=useState('');
 
   const [transcript, setTranscript] = useState<any[]>([]);
   const[transcriptCopy,setTranscriptCopy]=useState<any[]>([]);
@@ -110,7 +110,8 @@ const Home: React.FC = () => {
 
     const urlPattern = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^&\n]{11})/;
     const match = videoId.match(urlPattern);
-    setExtractedId(match ? match[1] : videoId);
+    const extractedId = match ? match[1] : videoId;
+    // setExtractedId(match ? match[1] : videoId);
 
     try {
       const response = await fetch(`https://scriptifyy.vercel.app/api/fetch-transcript?videoId=${extractedId}`)
