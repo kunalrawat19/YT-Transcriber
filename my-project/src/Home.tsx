@@ -10,14 +10,17 @@ import { FaChevronDown } from "react-icons/fa";
 
 const Home: React.FC = () => {
   const [videoId, setVideoId] = useState<string>("");
-  const [transcript, setTranscript] = useState<any[]>([]);
-  const[transcriptCopy,setTranscriptCopy]=useState<any[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [backgroundImage, setBackgroundImage] = useState<string>(`src/assets/${Math.floor(Math.random() * 40)}.gif`);
-  const [targetLanguage, setTargetLanguage] = useState('en');
   const [extractedId,setExtractedId]=useState('');
 
+  const [transcript, setTranscript] = useState<any[]>([]);
+  const[transcriptCopy,setTranscriptCopy]=useState<any[]>([]);
+
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const [backgroundImage, setBackgroundImage] = useState<string>(`src/assets/${Math.floor(Math.random() * 40)}.gif`);
+  
+  const [targetLanguage, setTargetLanguage] = useState('en');
 
   const backgroundImages = [
     { id: 1, link: "https://res.cloudinary.com/dqgrwjod2/image/upload/v1727698053/Zombies_vwgwnp.gif" },
@@ -74,11 +77,6 @@ const Home: React.FC = () => {
   
   
   ];
-  
-  
-  
-  
-
 
   
   const changeBackgroundImage = () => {
@@ -95,7 +93,10 @@ const Home: React.FC = () => {
   }, []);
 
   const downloadTranscript = (transcript) => {
-    const blob = new Blob([transcript], { type: 'text/plain' });
+    const formattedData = transcriptCopy.map(item => 
+      ` ${Math.floor(item.offset / 3600) < 10 ? '0' + Math.floor(item.offset / 3600) : Math.floor(item.offset / 3600)}:${Math.floor((item.offset % 3600) / 60) < 10 ? '0' + Math.floor((item.offset % 3600) / 60) : Math.floor((item.offset % 3600) / 60)}:${Math.floor(item.offset % 60) < 10 ? '0' + Math.floor(item.offset % 60) : Math.floor(item.offset % 60)}-- ${item.text}`
+    ).join('\n');
+    const blob = new Blob([formattedData], { type: 'text/plain' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
     link.download = `${videoId}.txt`;
@@ -112,10 +113,18 @@ const Home: React.FC = () => {
     setExtractedId(match ? match[1] : videoId);
 
     try {
-      const response = await fetch(`http://localhost:3000/fetch-transcript?videoId=${extractedId}`);
+      const response = await fetch(`http://localhost:3000/fetch-transcript?videoId=${extractedId}`)
       if (!response.ok) throw new Error('Network response was not ok');
-      const transcriptData = await response.json();
+      let transcriptData = await response.json();
+
+      
+
+      
+
       setTranscript(transcriptData);
+      // console.log(formattedData)
+      setTranscriptCopy(transcriptData);
+
 
       
       
@@ -153,18 +162,18 @@ const Home: React.FC = () => {
         })
       );
   
-      console.log(translatedText);
-      setTranscript(translatedText)
+      
+      setTranscriptCopy(translatedText)
     } catch (error) {
       console.error("Translation Error:", error);
     }
   };
 
   useEffect(() => {
-    if (transcript) {
+    if (transcriptCopy) {
       handleTranslate();
     }
-  }, [transcript]);
+  }, [targetLanguage]);
   
 
   const handleCopy = () => {
@@ -235,7 +244,7 @@ const Home: React.FC = () => {
       <div className="relative w-[80%] m-auto text-center mb-12">
      {loading && <div className="font-lines text-2xl">Loading...</div>}
      {error && <p className="text-red-500">{error}</p>}
-  {transcript.length > 0 && (
+  {transcriptCopy.length > 0 && (
     <div className="flex md:flex-row mt-[3rem] md:gap-[4rem] flex-col gap-[4rem]">
       
       {/* YouTube iframe */}
@@ -261,7 +270,7 @@ const Home: React.FC = () => {
             <MdDownload />
 
             </button>
-            <button className="text-blue-500 font-bold text-xl border rounded-xl p-3 " onClick={handleCopy}>
+            <button className="text-blue-500 font-bold text-xl border rounded-xl p-3 " onClick={handleCopy} >
               <LuCopy />
             </button>
             </div>
@@ -270,7 +279,7 @@ const Home: React.FC = () => {
 
         {/* Content with top padding */}
         <div className=" pt-0 p-4"> {/* Adjust padding to match navbar height */}
-          {transcript.map((line, index) => (
+          {transcriptCopy.map((line, index) => (
             <p key={index} className="text-xl p-2 ">
               {Math.floor(line.offset / 3600) < 10 ? '0' + Math.floor(line.offset / 3600) : Math.floor(line.offset / 3600)}:
               {Math.floor((line.offset % 3600) / 60) < 10 ? '0' + Math.floor((line.offset % 3600) / 60) : Math.floor((line.offset % 3600) / 60)}:
