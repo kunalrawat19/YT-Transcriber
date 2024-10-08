@@ -121,7 +121,7 @@ const Home: React.FC = () => {
       }
   
       // Make the API call to fetch transcript
-      const response = await fetch(`http://localhost:3000/fetch-transcript?videoId=${extractedId}`);
+      const response = await fetch(`https://yt-transcriber.onrender.com/fetch-transcript?videoId=${extractedId}`);
   
       if (!response.ok) {
         throw new Error('Network response was not ok');
