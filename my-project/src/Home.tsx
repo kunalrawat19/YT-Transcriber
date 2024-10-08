@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "/src/components/Navbar.tsx";
+import Navbar from "./components/Navbar.tsx";
 
 import axios from "axios";
 import translate from "translate";
@@ -21,7 +21,7 @@ const Home: React.FC = () => {
   const [backgroundImage, setBackgroundImage] = useState<string>(`src/assets/${Math.floor(Math.random() * 40)}.gif`);
   
   const [targetLanguage, setTargetLanguage] = useState('en');
-
+  const [extractedId,setExtractedId]=useState('');
   const backgroundImages = [
     { id: 1, link: "https://res.cloudinary.com/dqgrwjod2/image/upload/v1727698053/Zombies_vwgwnp.gif" },
     { id: 2, link: "https://res.cloudinary.com/dqgrwjod2/image/upload/v1727698048/tumblr_om1h9bsPn41vjxiz1o1_540_gif_512_312_zyiknt.gif" },
@@ -107,37 +107,42 @@ const Home: React.FC = () => {
   const fetchTranscript = async (videoId: string) => {
     setLoading(true);
     setError(null);
-
-    const urlPattern = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^&\n]{11})/;
-    const match = videoId.match(urlPattern);
-    const extractedId = match ? match[1] : videoId;
-    // setExtractedId(match ? match[1] : videoId);
-
+  
     try {
-      const response = await fetch(`https://scriptifyy.vercel.app/api/fetch-transcript?videoId=${extractedId}`)
-      if (!response.ok) throw new Error('Network response was not ok');
-      let transcriptData = await response.json();
-
-      
-
-      
-
+      // Regular expression to extract video ID from YouTube URL
+      const urlPattern = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^&\n]{11})/;
+      const match = videoId.match(urlPattern);
+  
+      // Define extractedId here to ensure it is always scoped properly
+      const extractedId = match ? match[1] : videoId;
+      setExtractedId(match ? match[1] : videoId);
+      if (!extractedId) {
+        throw new Error('Invalid video ID or URL');
+      }
+  
+      // Make the API call to fetch transcript
+      const response = await fetch(`http://localhost:3000/fetch-transcript?videoId=${extractedId}`);
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+  
+      const transcriptData = await response.json();
+  
+      // Set the fetched transcript
       setTranscript(transcriptData);
-      // console.log(formattedData)
       setTranscriptCopy(transcriptData);
-
-
-      
-      
-    } catch (error) {
-      // console.error('Error fetching transcript:', error.message);
+  
+    } catch (error: any) {
+      // If an error occurs, set the error state
       setError("Error fetching transcript. Please check the video ID and try again.");
     } finally {
-      // handleTranslate();
+      // Reset the loading state
       setLoading(false);
-      setError(null)
     }
   };
+  
+  
 
   function downloadTrans(){
     downloadTranscript(JSON.stringify(transcript));
