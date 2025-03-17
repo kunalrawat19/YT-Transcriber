@@ -1,4 +1,4 @@
-# Scriptify  
+# Scriptifyy
 
 A powerful tool for transcribing and summarizing YouTube videos. Scriptify enhances accessibility by providing accurate video transcriptions and concise summaries, significantly reducing the time needed to consume video content.  
 
@@ -28,7 +28,10 @@ A powerful tool for transcribing and summarizing YouTube videos. Scriptify enhan
 ### **Clone the repository**  
 ```bash
 git clone [https://github.com/kunalrawat19/YT-Transcriber.git]
-cd scriptify
+cd backend
+npm run dev
+cd my_project
+npm run dev
 ```
 
 ### **Install dependencies**  
